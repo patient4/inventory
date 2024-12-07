@@ -1,90 +1,90 @@
-# E-commerce Inventory Microservice
+# Inventory Management gRPC Service
 
 ## **Overview**
-This repository contains the code for a microservice that manages the inventory of an e-commerce application. The Inventory Microservice provides RESTful APIs to perform CRUD operations on product data, including adding new products, fetching product details, updating product information, and deleting products.
+This repository contains a Python-based gRPC service for managing an inventory system. The gRPC service allows CRUD operations on product data, including adding, retrieving, updating, and deleting products. This is implemented using Python, gRPC, and Protocol Buffers.
 
 ---
 
 ## **Features**
-- Add new products to the inventory.
-- Fetch all products or a specific product by ID.
-- Update product details.
-- Delete products from the inventory.
+- **Add Product:** Add new products to the inventory.
+- **Get Product:** Retrieve product details by ID.
+- **Get All Products:** Fetch the list of all products in the inventory.
+- **Update Product:** Modify existing product details.
+- **Delete Product:** Remove a product from the inventory.
 
 ---
 
 ## **Technology Stack**
-- **Programming Language:** Python (Flask/FastAPI) or Node.js (Express.js)
-- **Database:** PostgreSQL or MongoDB
-- **Containerization:** Docker
-- **Hosting:** AWS / GCP / Azure / DigitalOcean
+- **Programming Language:** Python
+- **Framework:** gRPC
+- **Serialization:** Protocol Buffers (proto3)
 
 ---
 
 ## **Setup and Installation**
 
-### Prerequisites
-- Docker installed on your system
-- Python 3.9+ or Node.js 16+ installed
-- PostgreSQL or MongoDB database setup
-- Git installed
+### **Prerequisites**
+- Python 3.9 or higher
+- `grpcio` and `grpcio-tools` libraries
 
-### Steps
+### **Steps**
 1. Clone the repository:
    ```bash
    git clone <repository-url>
    cd <repository-folder>
    ```
 
-2. Install dependencies:
-   - **Python**
-     ```bash
-     pip install -r requirements.txt
-     ```
-   - **Node.js**
-     ```bash
-     npm install
-     ```
+2. Install the required dependencies:
+   ```bash
+   pip install grpcio grpcio-tools
+   ```
 
-3. Configure the environment variables:
-   - Copy the `.env.example` file and rename it to `.env`.
-   - Update the database connection string and other configuration variables.
+3. Compile the Protocol Buffers:
+   ```bash
+   python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. inventory.proto
+   ```
+   This generates `inventory_pb2.py` and `inventory_pb2_grpc.py` files.
 
-4. Run the application locally:
-   - **Python**
-     ```bash
-     python app.py
-     ```
-   - **Node.js**
-     ```bash
-     npm start
-     ```
+4. Start the gRPC server:
+   ```bash
+   python server.py
+   ```
 
-5. Access the application at `http://localhost:5000`.
+5. (Optional) Run the client to test the service:
+   ```bash
+   python client.py
+   ```
 
 ---
 
-## **API Endpoints**
+## **gRPC API Endpoints**
 
-### **Product Management**
-- **POST /products** - Add a new product
-- **GET /products** - Fetch all products
-- **GET /products/{id}** - Fetch product by ID
-- **PUT /products/{id}** - Update product by ID
-- **DELETE /products/{id}** - Delete product by ID
+### **Service Definition**
+The `InventoryService` is defined in the `inventory.proto` file. Below are the supported RPC methods:
 
-### **Sample Request/Response**
-#### POST /products
+1. **AddProduct**
+   - **Request:** `Product`
+   - **Response:** `Empty`
+
+2. **GetProduct**
+   - **Request:** `ProductRequest`
+   - **Response:** `Product`
+
+3. **GetAllProducts**
+   - **Request:** `Empty`
+   - **Response:** `ProductList`
+
+4. **UpdateProduct**
+   - **Request:** `Product`
+   - **Response:** `Empty`
+
+5. **DeleteProduct**
+   - **Request:** `ProductRequest`
+   - **Response:** `Empty`
+
+### **Sample Request and Response**
+#### Add Product:
 **Request:**
-```json
-{
-  "name": "Laptop",
-  "description": "High-performance laptop",
-  "price": 1200.50,
-  "stock": 10
-}
-```
-**Response:**
 ```json
 {
   "id": 1,
@@ -94,72 +94,38 @@ This repository contains the code for a microservice that manages the inventory 
   "stock": 10
 }
 ```
+**Response:**
+```json
+{}
+```
 
 ---
 
-## **Containerization**
-
-### Build Docker Image
-```bash
-docker build -t inventory-microservice .
+## **Project Structure**
 ```
-
-### Run Docker Container
-```bash
-docker run -d -p 5000:5000 --env-file .env inventory-microservice
+.
+├── inventory.proto        # Protocol Buffers file
+├── inventory_pb2.py       # Generated Python classes for messages
+├── inventory_pb2_grpc.py  # Generated gRPC service classes
+├── server.py              # gRPC server implementation
+├── client.py              # gRPC client implementation
+├── README.md              # Project documentation
 ```
-
-### Using Docker Compose
-1. Ensure `docker-compose.yml` is properly configured.
-2. Run the following command:
-   ```bash
-   docker-compose up
-   ```
-
----
-
-## **Deployment**
-
-1. Push the Docker image to a registry:
-   ```bash
-   docker tag inventory-microservice <registry-url>/inventory-microservice
-   docker push <registry-url>/inventory-microservice
-   ```
-
-2. Deploy to your cloud provider (AWS/GCP/Azure):
-   - Set up a virtual machine or container orchestration platform (e.g., Kubernetes).
-   - Pull and run the Docker image.
 
 ---
 
 ## **Testing**
-- Use Postman or Curl to test the API endpoints.
-- Run unit tests:
-  ```bash
-  pytest  # For Python
-  npm test  # For Node.js
-  ```
+- Use `client.py` to test the gRPC server functionality.
+- Alternatively, use gRPC client tools like [BloomRPC](https://github.com/bloomrpc/bloomrpc) or [Postman](https://www.postman.com/) (with gRPC support).
 
 ---
 
-## **Documentation**
-- Swagger UI is available at `/docs` if enabled.
-- Alternatively, API documentation is available in the `docs` folder of this repository.
+## **Future Enhancements**
+- Integrate with a persistent database (e.g., PostgreSQL or MongoDB).
+- Add authentication and SSL/TLS for secure communication.
+- Containerize the service using Docker.
+- Implement advanced monitoring with Prometheus and Grafana.
 
 ---
 
-## **Contributing**
-- Fork the repository.
-- Create a new branch (`feature-branch`).
-- Commit your changes.
-- Submit a pull request.
 
----
-
-## **License**
-This project is licensed under the MIT License. See the LICENSE file for details.
-
----
-
-## **Contact**
-For any issues or feature requests, please raise an issue in this repository.
