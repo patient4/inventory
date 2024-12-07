@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package inventory;
+
+// Define the product message
+message Product {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+  int32 stock = 5;
+}
+
+// Define the request and response messages
+message ProductRequest {
+  int32 id = 1;
+}
+
+message ProductList {
+  repeated Product products = 1;
+}
+
+// defined to set the payload from the server to
+// add detailed message for operation success.
+message ProductResponse {
+  string msg = 1;
+  bool success = 2;
+}
+
+message Empty {}
+
+service InventoryService {
+  rpc AddProduct (Product) returns (ProductResponse);
+  rpc GetProduct (ProductRequest) returns (Product);
+  rpc GetAllProducts (Empty) returns (ProductList);
+  rpc UpdateProduct (Product) returns (ProductResponse);
+  rpc DeleteProduct (ProductRequest) returns (ProductResponse);
+}
