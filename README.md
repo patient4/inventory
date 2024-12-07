@@ -30,8 +30,8 @@ This repository contains a Python-based gRPC service for managing an inventory s
 ### **Steps**
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/patient4/inventory.git
+   cd inventory
    ```
 
 2. Install the required dependencies:
@@ -41,9 +41,9 @@ This repository contains a Python-based gRPC service for managing an inventory s
 
 3. Compile the Protocol Buffers:
    ```bash
-   python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. inventory.proto
+   python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. inventory_service.proto
    ```
-   This generates `inventory_pb2.py` and `inventory_pb2_grpc.py` files.
+   This generates `inventory_service_pb2.py` and `inventory_service_pb2_grpc.py` files.
 
 4. Start the gRPC server:
    ```bash
