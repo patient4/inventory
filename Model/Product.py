@@ -1,9 +1,11 @@
-from dataclasses import dataclass
+from sqlalchemy import Column, Integer, String, Float
+from db.connection import Base
 
-@dataclass
-class Product:
-    id: int
-    name: str
-    description: str
-    price: float
-    stock: int
+
+class Product(Base):
+    __tablename__ = 'products'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    price = Column(Float)
+    stock = Column(Integer)
